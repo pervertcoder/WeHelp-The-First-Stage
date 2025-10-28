@@ -114,9 +114,81 @@ for i in range(0, len(result), 6):
     new_result.append((result[i:i+6]))
 # print(new_result)
 
-
-file = open('hotel.csv', mode='w', newline='', encoding='utf-8')
+# csv檔案寫入
+file = open('hotel.csv', mode='w', newline='', encoding='utf-8-sig')
 writer = csv.writer(file)
 for i in new_result:
+    writer.writerow(i)
+file.close()
+
+# 行政區
+district = []
+for area in new_result:
+    small_area = area[2][3:6]
+    district.append(small_area)
+    # print(district)
+
+
+# 房間數
+room_count = []
+for room in new_result:
+    room_count.append(room[5])
+    # print(room_count)
+
+district_room_count = list(zip(district, room_count))
+# print(district_room_count)
+
+taipei_district = ['北投區', '士林區', '內湖區', '南港區', '文山區', '大同區', '中山區', '松山區', '信義區', '大安區', '中正區', '萬華區']
+
+# district_1 = []
+# for i in district_room_count:
+#     if i[0] == taipei_district[0]:
+#         district_1.append(i)
+
+# hotel_num = len(district_1)
+
+# district_1_hotel_room = []
+# for i in district_1:
+#     district_1_hotel_room.append(i[1])
+
+# sum_district_1_hotel_room = 0
+# for i in district_1_hotel_room:
+#     sum_district_1_hotel_room += int(i)
+
+# D1 = [[taipei_district[0], hotel_num, sum_district_1_hotel_room]]
+# print(D1)
+
+def district_maker(lis, dis):
+    district_num = []
+    for i in lis:
+        if i[0] == dis:
+            district_num.append(i)
+    
+    hotel_n = len(district_num)
+
+    district_hotel_rom = []
+    for j in district_num:
+        district_hotel_rom.append(j[1])
+    
+    sum_district_num_hotel_room = 0
+    for h in district_hotel_rom:
+        sum_district_num_hotel_room +=  int(h)
+    
+    D = [dis, hotel_n, sum_district_num_hotel_room]
+    return D
+
+
+district_result = []
+for i in taipei_district:
+    district_result.append(district_maker(district_room_count, i))
+
+
+# print (district_result)
+
+
+# csv檔案寫入
+file = open('district.csv', mode='w', newline='', encoding='utf-8-sig')
+writer = csv.writer(file)
+for i in district_result:
     writer.writerow(i)
 file.close()
