@@ -61,7 +61,7 @@ result_page_one = []
 for titlee, number, datee in zip(artile_name, num_good, t):
     result_page_one.append([titlee, number, datee])
 
-print(result_page_one)
+# print(result_page_one)
 
 def get_page (link_response):
     html_style_reader = bs4.BeautifulSoup(link_response, 'html.parser')
@@ -112,7 +112,7 @@ result_page_two = []
 for titlee2, number2, datee2 in zip(artile_name2, num_good2, t2):
     result_page_two.append([titlee2, number2, datee2])
 
-print(result_page_two)
+# print(result_page_two)
 
 next_page2 = 'https://www.ptt.cc' + get_page(ppt_data2)
 
@@ -158,4 +158,17 @@ result_page_three = []
 for titlee3, number3, datee3 in zip(artile_name3, num_good3, t3):
     result_page_three.append([titlee3, number3, datee3])
 
-print(result_page_three)
+# print(result_page_three)
+
+the_final_result = []
+the_final_result.extend(result_page_one)
+the_final_result.extend(result_page_two)
+the_final_result.extend(result_page_three)
+print(the_final_result)
+
+# csv檔案寫入
+file = open('article.csv', mode='w', newline='', encoding='utf-8')
+writer = csv.writer(file)
+for i in the_final_result:
+    writer.writerow(i)
+file.close()
