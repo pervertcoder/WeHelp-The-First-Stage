@@ -1,3 +1,4 @@
+
 import urllib.request as request
 import json
 import csv
@@ -10,7 +11,6 @@ url_EN = 'https://resources-wehelp-taiwan-b986132eca78c0b5eeb736fc03240c2ff8b711
 with request.urlopen(url_EN)as response_EN:
     data_EN = json.load(response_EN)
 hotel_EN = data_EN['list']
-
 
 # 解構元組
 def disconstructin (lis):
@@ -114,12 +114,7 @@ for i in range(0, len(result), 6):
     new_result.append((result[i:i+6]))
 # print(new_result)
 
-# csv檔案寫入
-file = open('hotel.csv', mode='w', newline='', encoding='utf-8-sig')
-writer = csv.writer(file)
-for i in new_result:
-    writer.writerow(i)
-file.close()
+
 
 # 行政區
 district = []
@@ -183,12 +178,20 @@ for i in taipei_district:
     district_result.append(district_maker(district_room_count, i))
 
 
-# print (district_result)
+print (district_result)
 
 
 # csv檔案寫入
-file = open('district.csv', mode='w', newline='', encoding='utf-8-sig')
-writer = csv.writer(file)
-for i in district_result:
-    writer.writerow(i)
-file.close()
+# file = open('hotel.csv', mode='w', newline='', encoding='utf-8-sig')
+# writer = csv.writer(file)
+# for i in new_result:
+#     writer.writerow(i)
+# file.close()
+
+
+# csv檔案寫入
+# file = open('district.csv', mode='w', newline='', encoding='utf-8-sig')
+# writer = csv.writer(file)
+# for i in district_result:
+#     writer.writerow(i)
+# file.close()
