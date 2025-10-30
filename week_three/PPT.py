@@ -69,7 +69,7 @@ def get_page (link_response):
     return next_line['href']
 
 next_page = 'https://www.ptt.cc' + get_page(ppt_data)
-print(next_page)
+# print(next_page)
 # 第二頁
 
 url_ppt2 = next_page
@@ -86,7 +86,7 @@ artile_name2 = []
 for title2 in titles2:
     if title2.a != None:
         artile_name2.append (title2.a.string)
-print(artile_name2)
+# print(artile_name2)
 
 # 第二頁按讚數
 num_good2 = []
@@ -94,4 +94,68 @@ for good2 in num2:
     if good2.span != None:
         num_good2.append(good2.span.string)
     else: num_good2.append(0)
-print(num_good2)
+# print(num_good2)
+
+# 第二頁的文章內文，發文時間
+t2 = []
+for h in range(len(titles2)):
+    urll2 = get_data_time('https://www.ptt.cc' + titles2[h].a['href'])
+    if urll2 is not None:
+        t2.append(urll2)
+    else:
+        t2.append('blank')
+
+time.sleep(random.uniform(0.5, 1))
+
+# print(t2)
+result_page_two = []
+for titlee2, number2, datee2 in zip(artile_name2, num_good2, t2):
+    result_page_two.append([titlee2, number2, datee2])
+
+print(result_page_two)
+
+next_page2 = 'https://www.ptt.cc' + get_page(ppt_data2)
+
+url_ppt3 = next_page2
+request_page3 = rep.Request(url_ppt3, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'})
+with rep.urlopen(request_page3) as ppt_reponse3:
+    ppt_data3 = ppt_reponse3.read().decode('utf-8')
+
+root3 = bs4.BeautifulSoup(ppt_data3, 'html.parser')
+titles3 = root3.find_all('div', class_= 'title')
+num3 = root3.find_all('div', class_='nrec')
+
+# 第三頁文章標題
+artile_name3 = []
+for title3 in titles3:
+    if title3.a != None:
+        artile_name3.append (title3.a.string)
+# print(artile_name3)
+
+# 第三頁按讚數
+num_good3 = []
+for good3 in num3:
+    if good3.span != None:
+        num_good3.append(good3.span.string)
+    else: num_good3.append(0)
+# print(num_good3)
+
+# 第三頁的文章內文，發文時間
+
+t3 = []
+for h in range(len(titles3)):
+    urll3 = get_data_time('https://www.ptt.cc' + titles3[h].a['href'])
+    if urll3 is not None:
+        t3.append(urll3)
+    else:
+        t3.append('blank')
+
+time.sleep(random.uniform(0.5, 1))
+
+# print(t3)
+
+result_page_three = []
+for titlee3, number3, datee3 in zip(artile_name3, num_good3, t3):
+    result_page_three.append([titlee3, number3, datee3])
+
+print(result_page_three)
