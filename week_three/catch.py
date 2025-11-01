@@ -182,16 +182,16 @@ print (district_result)
 
 
 # csv檔案寫入
-# file = open('hotel.csv', mode='w', newline='', encoding='utf-8-sig')
-# writer = csv.writer(file)
-# for i in new_result:
-#     writer.writerow(i)
-# file.close()
+file = open('hotel.csv', mode='w', newline='', encoding='utf-8-sig')
+writer = csv.writer(file)
+for i in new_result:
+    writer.writerow(i)
+file.close()
 
 
 # csv檔案寫入
-# file = open('district.csv', mode='w', newline='', encoding='utf-8-sig')
-# writer = csv.writer(file)
-# for i in district_result:
-#     writer.writerow(i)
-# file.close()
+file = open('district.csv', mode='w', newline='', encoding='utf-8-sig')
+writer = csv.writer(file)
+for i in district_result:
+    writer.writerow(i)
+file.close()

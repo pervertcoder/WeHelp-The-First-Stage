@@ -51,7 +51,7 @@ for i in range(len(titles)):
     if urll is not None:
         t.append(urll)
     else:
-        t.append('blank')
+        t.append("' '")
 
 time.sleep(random.uniform(0.5, 1))
 
@@ -103,7 +103,7 @@ for h in range(len(titles2)):
     if urll2 is not None:
         t2.append(urll2)
     else:
-        t2.append('blank')
+        t2.append("' '")
 
 time.sleep(random.uniform(0.5, 1))
 
@@ -148,7 +148,7 @@ for h in range(len(titles3)):
     if urll3 is not None:
         t3.append(urll3)
     else:
-        t3.append('blank')
+        t3.append("' '")
 
 time.sleep(random.uniform(0.5, 1))
 

@@ -2,7 +2,7 @@ $basefontsize: 20px;
 $backgroundcolor: #ecf5ff;
 $opacity: 0.6;
 $opacity_bar: 0.7;
-$title_bar_color: #ffffb9;
+$title_bar_color: #d3d3d3;
 
 .topbar {
   width: 100%;
@@ -454,6 +454,14 @@ $title_bar_color: #ffffb9;
   align-items: center;
   justify-content: center;
 }
+.transparent_bar7 p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin-left: 25px;
+  margin-right: 25px;
+}
 .title7 img {
   width: 100%;
   height: 100%;
@@ -573,10 +581,17 @@ $title_bar_color: #ffffb9;
   background-color: $title_bar_color;
   opacity: $opacity_bar;
   z-index: 5;
-  // font
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.transparent_bar4 p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 .title4 img {
   width: 100%;
@@ -852,7 +867,7 @@ $title_bar_color: #ffffb9;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
-  /*
+
   .title_one_row1 {
     position: relative;
     overflow: hidden;
@@ -863,6 +878,22 @@ $title_bar_color: #ffffb9;
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  #bar4 p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  #bar7 p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    margin-left: 25px;
+    margin-right: 25px;
   }
   .title_one_row1::after {
     content: "⭐";
@@ -903,15 +934,14 @@ $title_bar_color: #ffffb9;
     pointer-events: none;
     z-index: 10;
   }
-  */
+
   .title {
     display: none;
   }
-  /*
+
   .title {
     margin-top: 25px;
   }
-  */
 }
 @media (max-width: 600px) and (min-width: 361px) {
   .topbar {
