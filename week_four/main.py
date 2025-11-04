@@ -1,34 +1,33 @@
 from typing import Annotated
-from fastapi import FastAPI, Path, Query
+from fastapi import FastAPI, Path, Query, Form
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+import re
 
 app = FastAPI() # FastAPI物件
 
 # 非靜態檔案處理路由，擺在上方
-@app.get('/square/{num}')
-def square(num:Annotated[int, Path(ge = 1)]):
-    num = int(num)
-    return {'result': num*num}
 
-@app.get('/multiply')
-def multiply(
-    n1:Annotated[int, Query(ge = 0, le = 10)],
-    n2:Annotated[int, Query(ge = 0, le = 10)]
-):
-    n1 = int(n1)
-    n2 = int(n2)
-    result = n1 * n2
-    return {'result': result}
+@app.get('/member')
+def member():
+    return FileResponse('memberpage/memberpageindex.html')
 
-@app.get('/echo/{name}')
-def echo(name:Annotated[str, Path(min_length=2, max_length=30)]):
-    return {'message':'hello ' + name}
+@app.post('/login')
+def login(email:str=Form(...), password:str=Form(...)):
+    if not email or not password:
+        return RedirectResponse(url='ohoh?msg=請填寫帳號或密碼', status_code=303)
+    elif email != 'abc@abc.com':
+        return RedirectResponse(url='ohoh?msg=帳號不存在', status_code=303)
+    elif password != 'abc':
+        return RedirectResponse(url='ohoh?msg=密碼不存在', status_code=303)
+    else:
+        return RedirectResponse(url='/member', status_code=303)
 
-@app.get('/hello')
-def hello (name:Annotated[str, Query(min_length=3)]):
-    return {'message': 'hello ' + name}
+@app.get('/ohoh')
+def fail(msg: str = Query()):
+    return FileResponse('failpage/failpageindex.html')
 
 # 統一處理靜態檔案，擺在下方，才不會影響其他路由
 
+app.mount('/failpage', StaticFiles(directory='failpage'))
 app.mount('/', StaticFiles(directory='homepage', html=True))

@@ -14,22 +14,12 @@
     <div class="content">
       <p class="title1">登入系統</p>
     </div>
-    <div class="login">
-      <p>信箱</p>
-      <input type="email" class="input-box" id="email" />
-    </div>
-    <div class="passnumber">
-      <p>密碼</p>
-      <input type="password" class="input-box" id="password" />
-    </div>
-    <div class="contract">
-      <div class="clixk">
-        <p>同意條款</p>
-      </div>
-      <input type="checkbox" id="agree" />
-    </div>
-    <div class="butt">
-      <button type="button" onclick="alert('登入功能尚未實作')">登入</button>
-    </div>
+    <form action="/login" method="post" id="form">
+      <div class="account">帳號<input type="text" name="email" /></div>
+      <div class="passwort">密碼<input type="text" name="password" /></div>
+      <div class="agree">同意條款<input type="checkbox" id="agree" /></div>
+      <div class="button"><button type="button" id="butt">登入</button></div>
+    </form>
+    <script src="script.js"></script>
   </body>
 </html>

@@ -24,40 +24,34 @@
   font-weight: bold;
 }
 
-.login {
+form {
+  margin-top: 30px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 40px;
+  align-items: center;
 }
 
-.login p {
-  width: 40px;
-  height: 20px;
-  padding-top: 5px;
-  margin-right: 10px;
+.account {
+  margin-bottom: 10px;
 }
 
-.passnumber {
-  display: flex;
-  justify-content: center;
+.passwort {
   margin-top: 10px;
 }
 
-.passnumber p {
-  width: 40px;
-  height: 20px;
-  padding-top: 5px;
-  margin-right: 10px;
+.account input {
+  margin-left: 5px;
 }
 
-.contract {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+.passwort input {
+  margin-left: 5px;
 }
 
-.butt {
+.agree {
   margin-top: 20px;
-  display: flex;
-  justify-content: center;
+}
+
+.button {
+  margin-top: 20px;
 }/*# sourceMappingURL=style.css.map */
