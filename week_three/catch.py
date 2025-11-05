@@ -59,7 +59,7 @@ hotel_id_name = list(zip(id_list, hotel_CH_name_list))
 # print(hotel_id_name)
 hotel_id_name_list = disconstructin(hotel_id_name)
 hotel_id_name1 = divide_element(hotel_id_name_list, 2)
-# print(hotel_id_name1)
+print(hotel_id_name1)
 
 # 加入英文名字
 for i in hotel_id_name1:

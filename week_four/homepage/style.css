@@ -54,4 +54,22 @@ form {
 
 .button {
   margin-top: 20px;
+}
+
+.infor p {
+  padding-top: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.order {
+  margin-top: 20px;
+}
+
+.buttonget {
+  margin-top: 20px;
+}
+
+.order input {
+  margin-left: 5px;
 }/*# sourceMappingURL=style.css.map */

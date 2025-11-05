@@ -21,4 +21,15 @@
 .content p {
   padding-top: 20px;
   font-size: 30px;
+}
+
+.logout {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout a {
+  font-size: 25px;
 }/*# sourceMappingURL=memberstyle.css.map */
