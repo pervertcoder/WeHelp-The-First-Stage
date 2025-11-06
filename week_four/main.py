@@ -2,6 +2,7 @@ from fastapi import FastAPI, Path, Query, Form, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
+from typing import Annotated
 
 import urllib.request as request
 import json
@@ -40,7 +41,7 @@ def find_index_id (lis, n):
 # ID編碼
 id_list = []
 for i in hotel_CH:
-    hotel_id = i['_id']
+    hotel_id = int(i['_id'])
     id_list.append(hotel_id)
 
 #　中文名字
@@ -65,7 +66,8 @@ for k in range(len(hotel_id_name1)):
     hotel_phone = hotel_CH[k]['電話或手機號碼']
     hotel_id_name1[k].append(hotel_phone)
 
-# print(hotel_id_name1)
+print(hotel_id_name1)
+
 
 app = FastAPI() # FastAPI物件
 app.add_middleware(SessionMiddleware, secret_key='mysecret')
@@ -78,9 +80,21 @@ def member(request:Request):
         return RedirectResponse(url='/')
     return FileResponse('memberpage/memberpageindex.html')
 
-# @app.post('/hotel/{id}')
-# def hotel(id, hotelnum):
-#     return RedirectResponse(url='/hotel/{id}')
+@app.post('/hotel_redirect')
+def redirect_to_hotel(hotelnum:int = Form(...)):
+    return RedirectResponse(f'/hotel_page/{hotelnum}', status_code=303)
+# 抓取資料API
+@app.get('/hotel_data/{hotelnum}')
+def hotel_data(hotelnum:Annotated[int, None]):
+    for i in hotel_id_name1:
+        if hotelnum == int(i[0]) and 0<hotelnum<621:
+            print (i)
+            return i[1:]
+    return {'error':'查詢不到相關資料'}
+# 顯示頁面API
+@app.get('/hotel/{hotelnum}')
+def hotel(hotelnum:int):
+    return FileResponse('hotelpage/hotelpageindex.html')
 
 @app.post('/login')
 def login(request:Request, email:str=Form(...), password:str=Form(...)):
@@ -102,6 +116,7 @@ def logout(request:Request):
     return RedirectResponse(url='/')
 
 # 統一處理靜態檔案，擺在下方，才不會影響其他路由
+app.mount('/hotelpage', StaticFiles(directory='hotelpage'))
 app.mount('/memberpage', StaticFiles(directory='memberpage'))
 app.mount('/failpage', StaticFiles(directory='failpage'))
 app.mount('/', StaticFiles(directory='homepage', html=True))

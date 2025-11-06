@@ -13,3 +13,14 @@ const clickSent = function (event) {
   }
 };
 butt.addEventListener("click", clickSent);
+
+const buttonHotel = document.querySelector("#button");
+const hotelForm = document.querySelector("#hotelForm");
+const order = document.querySelector("#order");
+
+const clickHotelSent = function (event) {
+  event.preventDefault();
+  window.location.href = `/hotel/${order.value}`;
+};
+
+buttonHotel.addEventListener("click", clickHotelSent);
