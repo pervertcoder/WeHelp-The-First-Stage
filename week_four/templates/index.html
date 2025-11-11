@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="StaticFiles/reset.css" />
+    <link rel="stylesheet" href="StaticFiles/style.css" />
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <div class="topbar">
+      <p>{{welcome}}</p>
+    </div>
+    <div class="content">
+      <p class="title1">{{login_system}}</p>
+    </div>
+    <form action="/login" method="post" id="form">
+      <div class="account">{{mail_html}}<input type="text" name="email" /></div>
+      <div class="passwort">
+        {{password_html}}<input type="text" name="password" />
+      </div>
+      <div class="agree">{{agreement}}<input type="checkbox" id="agree" /></div>
+      <div class="button"><button id="butt">{{login_btn}}</button></div>
+    </form>
+    <form action="/hotel" method="get" id="hotelForm">
+      <div class="infor">
+        <p>{{get_hotel_information}}</p>
+      </div>
+      <div class="order">
+        {{order}}<input type="text" name="hotelnum" id="order" />
+      </div>
+      <div class="buttonget">
+        <button type="submit" id="button">{{get_information}}</button>
+      </div>
+    </form>
+    <script src="StaticFiles/script.js"></script>
+  </body>
+</html>

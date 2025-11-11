@@ -1,0 +1,61 @@
+.topbar {
+  width: 100%;
+  height: 180px;
+  background-color: #272727;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.topbar p {
+  color: white;
+  font-size: 40px;
+}
+.content {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.title1 {
+  padding-top: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.account {
+  margin-bottom: 10px;
+}
+.passwort {
+  margin-top: 10px;
+}
+.account input {
+  margin-left: 5px;
+}
+.passwort input {
+  margin-left: 5px;
+}
+.agree {
+  margin-top: 20px;
+}
+.button {
+  margin-top: 20px;
+}
+.infor p {
+  padding-top: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
+.order {
+  margin-top: 20px;
+}
+.buttonget {
+  margin-top: 20px;
+}
+.order input {
+  margin-left: 5px;
+}
