@@ -33,7 +33,7 @@ insert into member(name, email, password, follower_count)values
 ![img](https://github.com/pervertcoder/WeHelp-The-First-Stage/blob/main/week_five/截圖/TASK_3_REQUEST_1.png)
 
 REQUEST2:  
-select \* from member where id < 6;
+select \* from member;
 
 ![img](https://github.com/pervertcoder/WeHelp-The-First-Stage/blob/main/week_five/截圖/TASK_3_REQUEST_2.png)
 
@@ -142,12 +142,11 @@ where member.email = 'test@test.com';
 
 REQUEST5:  
 select  
-member.name as sender_name,  
 member.email as sender_email,  
 avg(like_count) as love  
 from message  
 join member
 on message.member_id = member.id  
-group by member.name, member.email;
+group by member.email;
 
 ![img](https://github.com/pervertcoder/WeHelp-The-First-Stage/blob/main/week_five/截圖/TASK_5_REQUEST_5.png)
