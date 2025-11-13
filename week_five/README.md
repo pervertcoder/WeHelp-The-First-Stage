@@ -13,7 +13,7 @@ create table member(
  name varchar(254) not null,  
  email varchar(254) not null,  
  password varchar(254) not null,  
- follower_count int check(follower_count >0) default 0 not null,  
+ follower_count int check(follower_count >=0) default 0 not null,  
  time datetime not null default current_timestamp  
  );
 
@@ -96,7 +96,7 @@ create table message(
  id int primary key auto_increment,  
  member_id int not null,  
  content text not null,  
- like_count int default 0 not null check(like_count > 0),  
+ like_count int default 0 not null check(like_count >= 0),  
  Time datetime not null default current_timestamp,  
  foreign key (member_id) references member(id)  
  );
