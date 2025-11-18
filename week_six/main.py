@@ -38,18 +38,50 @@ def show_databases ():
     return db_list
 
 # 創造table
-def show_table(data_base_name):
+def show_table(data_base_name, table_name):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute(f'use {data_base_name}')
-    mycursor.execute('show tables')
-    table_list = [table[0] for table in mycursor]
+    mycursor.execute(f'''create table {table_name}(
+        id int auto_increment primary key,
+        name varchar(254) not null,
+        email varchar(254) not null,
+        password varchar(254) not null)'''
+    )
+    conn.commit()
     conn.close()
-    return table_list
+    print(f'table {table_name} created successfully')
 
-# print(show_databases())
-# 11/18進度：寫入資料進入資料庫
-# 註冊、登入、登出
+# 顯示table
+def show_table_data(database_name, table_name):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
+    mycursor.execute(f'use {database_name}')
+    mycursor.execute(f'select * from {table_name}')
+    result = [x for x in mycursor]
+    conn.close()
+    return result
+check_data = show_table_data('memberdatabase', 'memberinfo')
+check_name = [x[1] for x in check_data]
+print(check_name)
+
+# 資料寫進資料庫
+def insert_info(table_name, columns, values):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
+
+    col_str = ','.join(columns)
+    placeholder = ','.join(['%s'] * len(values))
+    sql_command = f'insert into {table_name} ({col_str})values({placeholder})'
+    mycursor.execute('use memberdatabase')
+    mycursor.execute(sql_command, values)
+
+    conn.commit()
+    conn.close()
+    print('data inserted successfully')
+
+
+
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key = 'mysecretkey123')
 template = Jinja2Templates(directory='templates')
@@ -74,73 +106,92 @@ def root(request:Request):
     })
 
 @app.post('/signup')
-def regist_system(user_name = Form(...), email = Form(...), password = Form(...)):
-    pass
+def regist_system(request:Request, regist_user_name = Form(...), regist_email = Form(...), regist_password = Form(...)):
+    check = show_table_data('memberdatabase', 'memberinfo')
+    stat_var = True
+    if regist_user_name == '' or regist_email == '' or regist_password == '':
+        stat_var = False
+        return RedirectResponse(url='/ohoh?msg=請輸入姓名、電子郵件和密碼', status_code=303)
+    for i in check:
+        if regist_email == i[2]:
+            stat_var = False
+            break
+    if stat_var:
+        insert_info('memberinfo', ['name', 'email', 'password'], [regist_user_name, regist_email, regist_password])
+        print('sign successfully')
+        return RedirectResponse(url='/', status_code=303)
+    else:
+        return RedirectResponse(url='/ohoh?msg=重複的電子郵件', status_code=303)
+        
+
+
 @app.post('/login')
 def login(request:Request, email = Form(...), password = Form(...)):
-    pass
+    check_data = show_table_data('memberdatabase', 'memberinfo')
+    stat_var = False
+    if  email.strip() == '' or password.strip() == '':
+        return RedirectResponse(url='/ohoh?msg=請輸入電子郵件和密碼', status_code=303)
+    for i in check_data:
+        if email == i[2] and password == i[3]:
+            request.session['user'] = email
+            request.session['username'] = i[1]
+            stat_var = True
+            break
+    if stat_var:
+        return RedirectResponse(url='/member', status_code=303)
+    else:
+        return RedirectResponse(url='/ohoh?msg=電子郵件或密碼錯誤', status_code=303)
     
-    return RedirectResponse(url='/ohoh', status_code=303)
 @app.get('/member')
 def member(request:Request):
+    # check_data = show_table_data('memberdatabase', 'memberinfo')
+    # check_name = [x[1] for x in check_data]
     user_state = request.session.get('user')
+    user_name = request.session.get('username')
     if not user_state:
         return RedirectResponse(url='/')
     return template.TemplateResponse('memberpageindex.html', {
         'request' : request,
         'member_title' : 'memberpage',
         'member_h1' : '歡迎光臨，這是會員頁',
-        'successful_message' : '恭喜您，成功登入系統',
+        'successful_message' : f'{user_name}，歡迎登入系統',
         'logout_a' : '登出系統',
     })
-# @app.get('/logout')
-# def logout (request:Request):
-#     request.session.clear()
-#     return RedirectResponse(url='/')
+@app.get('/logout')
+def logout (request:Request):
+    request.session.clear()
+    return RedirectResponse(url='/')
 
-# @app.get('/ohoh')
-# def failpage(request:Request, msg):
-#     if msg == '帳號或密碼不存在':
-#         return template.TemplateResponse('failpageindex.html', {
-#         'request' : request,
-#         'fail' : '失敗頁面',
-#         'error_message' : '帳號或密碼不存在',
-#         'fail_title' : 'failpage',
-#     })
-#     else:
-#         msg = '請輸入帳號和密碼'
-#         return template.TemplateResponse('failpageindex.html', {
-#         'request' : request,
-#         'fail' : '失敗頁面',
-#         'error_message' : '請輸入帳號和密碼',
-#         'fail_title' : 'failpage',
-#     })
-
-# @app.get('/hotel/{hotelnum}')
-# def hotel_infor(request:Request, hotelnum:int):
-#     tem_list = []
-#     answer = ''
-#     if hotelnum > 0 and hotelnum < 621:
-#         for i in hotel_list:
-#             if int(hotelnum) == int(i[0]):
-#                 tem_list.extend(i[1:4])
-#                 print(tem_list)
-#         answer = '、'.join(tem_list)
-#         return template.TemplateResponse('hotelpageindex.html', {
-#             'request' : request,
-#             'hotel_title' : 'hotelpage',
-#             'hotel_h1' : '旅館資訊',
-#             'back_home' : '返回首頁',
-#             'hotelinfor' : answer,
-#     })
-#     else:
-#         return template.TemplateResponse('hotelpageindex.html', {
-#             'request' : request,
-#             'hotel_title' : 'hotelpage',
-#             'hotel_h1' : '旅館資訊',
-#             'back_home' : '返回首頁',
-#             'hotelinfor' : '查詢不到相關資料',
-#     })
+@app.get('/ohoh')
+def failpage(request:Request, msg:str):
+    if msg == '請輸入姓名、電子郵件和密碼': # 註冊
+        return template.TemplateResponse('failpageindex.html', {
+        'request' : request,
+        'fail' : '失敗頁面',
+        'error_message' : '請輸入姓名、電子郵件和密碼',
+        'fail_title' : 'failpage',
+    })
+    if msg == '重複的電子郵件': # 註冊
+        return template.TemplateResponse('failpageindex.html', {
+        'request' : request,
+        'fail' : '失敗頁面',
+        'error_message' : '重複的電子郵件',
+        'fail_title' : 'failpage',
+    })
+    if msg == '電子郵件或密碼錯誤':  # 登入
+        return template.TemplateResponse('failpageindex.html', {
+        'request' : request,
+        'fail' : '失敗頁面',
+        'error_message' : '電子郵件或密碼錯誤',
+        'fail_title' : 'failpage',
+    })
+    if msg == '請輸入電子郵件和密碼': # 登入
+        return template.TemplateResponse('failpageindex.html', {
+        'request' : request,
+        'fail' : '失敗頁面',
+        'error_message' : '請輸入電子郵件和密碼',
+        'fail_title' : 'failpage',
+    })
 
 
 # 統一處理靜態檔案
