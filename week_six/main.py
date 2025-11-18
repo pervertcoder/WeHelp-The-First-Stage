@@ -4,14 +4,18 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
 import requests
+
+from dotenv import load_dotenv
+import os
 import mysql.connector
 
+load_dotenv()
 # 連線MySQL
 def get_db_connect():
     mydb = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='XXXXXXX',
+        host = os.getenv('DB_HOST'),
+        user = os.getenv('DB_USER'),
+        password = os.getenv('DB_PASSWORD')
     )
     return mydb
 
