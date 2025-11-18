@@ -12,6 +12,20 @@
       <p>{{welcome}}</p>
     </div>
     <div class="content">
+      <p class="title1">{{regist_system}}</p>
+    </div>
+    <form action="/login" method="post" id="form" class="form">
+      <div class="user_name">
+        {{user_name}}<input type="text" name="user_name" />
+      </div>
+      <div class="account">{{mail_html}}<input type="text" name="email" /></div>
+      <div class="passwort">
+        {{password_html}}<input type="text" name="password" />
+      </div>
+      <div class="button"><button id="butt">{{regist_btn}}</button></div>
+    </form>
+    <div class="line"></div>
+    <div class="content">
       <p class="title1">{{login_system}}</p>
     </div>
     <form action="/login" method="post" id="form" class="form">
@@ -19,20 +33,8 @@
       <div class="passwort">
         {{password_html}}<input type="text" name="password" />
       </div>
-      <div class="agree">{{agreement}}<input type="checkbox" id="agree" /></div>
       <div class="button"><button id="butt">{{login_btn}}</button></div>
     </form>
-    <div class="hotelForm" id="hotelForm">
-      <div class="infor">
-        <p>{{get_hotel_information}}</p>
-      </div>
-      <div class="order">
-        {{order}}<input type="text" name="hotelnum" id="order" />
-      </div>
-      <div class="buttonget">
-        <button type="submit" id="button">{{get_information}}</button>
-      </div>
-    </div>
     <script src="StaticFiles/script.js"></script>
   </body>
 </html>

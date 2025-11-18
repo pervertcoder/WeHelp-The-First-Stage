@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../StaticFiles/reset.css" />
+    <link rel="stylesheet" href="../StaticFiles/style.css" />
+    <title>會員登入系統</title>
+  </head>
+  <body>
+    <div class="topbar">
+      <p>歡迎光臨，請輸入信箱密碼</p>
+    </div>
+    <div class="content">
+      <p class="title1">登入系統</p>
+    </div>
+    <form action="/login" method="post" id="form">
+      <div class="account">信箱<input type="text" name="email" /></div>
+      <div class="passwort">密碼<input type="text" name="password" /></div>
+      <div class="agree">同意條款<input type="checkbox" id="agree" /></div>
+      <div class="button"><button id="butt">登入</button></div>
+    </form>
+    <form action="/hotel" method="get" id="hotelForm">
+      <div class="infor">
+        <p>取得旅館資訊</p>
+      </div>
+      <div class="order">
+        編號<input type="text" name="hotelnum" id="order" />
+      </div>
+      <div class="buttonget">
+        <button type="button" id="button">取得</button>
+      </div>
+    </form>
+    <script src="../StaticFiles/script.js"></script>
+  </body>
+</html>

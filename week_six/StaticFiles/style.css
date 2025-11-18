@@ -24,7 +24,7 @@
   font-weight: bold;
 }
 
-.hotelForm {
+form {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
@@ -32,12 +32,9 @@
   align-items: center;
 }
 
-.form {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.user_name {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .account {
@@ -45,7 +42,11 @@
 }
 
 .passwort {
-  margin-top: 10px;
+  margin-top: 0px;
+}
+
+.user_name input {
+  margin-left: 5px;
 }
 
 .account input {
@@ -64,6 +65,11 @@
   margin-top: 20px;
 }
 
+.line {
+  border-top: solid 0.5px gray;
+  margin-top: 30px;
+}
+
 .infor p {
   padding-top: 20px;
   font-size: 30px;
@@ -80,4 +86,4 @@
 
 .order input {
   margin-left: 5px;
-} /*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
