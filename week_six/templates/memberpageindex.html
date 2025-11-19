@@ -17,5 +17,23 @@
     <div class="logout">
       <a href="/logout">{{logout_a}}</a>
     </div>
+    <div class="line"></div>
+    <form class="message" action="/createMessage" method="post">
+      <div class="messageboard">
+        <p>{{messageboard}}</p>
+      </div>
+      <div class="messageinput">
+        {{massageinput}} <input type="text" name="message" />
+      </div>
+      <div class="messagebutton">
+        <button id="buttonmessage">{{messagebtn}}</button>
+      </div>
+    </form>
+    <div class="line"></div>
+    <div class="board">
+      {% for i in show_message %}
+      <p>{{i[0]}} ： {{i[1]}}</p>
+      {% endfor %}
+    </div>
   </body>
 </html>

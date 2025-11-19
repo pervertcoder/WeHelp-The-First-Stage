@@ -61,9 +61,26 @@ def show_table_data(database_name, table_name):
     result = [x for x in mycursor]
     conn.close()
     return result
-check_data = show_table_data('memberdatabase', 'memberinfo')
-check_name = [x[1] for x in check_data]
-print(check_name)
+
+# 顯示特定資料
+def show_mesg_data(database_name):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
+    mycursor.execute(f'use {database_name}')
+    mycursor.execute('''select
+        message.id,
+        member_id,
+        memberinfo.name as sender_name,
+        message.content,
+        message.time
+        from message
+        join memberinfo on message.member_id = memberinfo.id
+        order by time asc
+    ''')
+    result1 = [[x[2], x[3]] for x in mycursor]
+    conn.close()
+    return result1
+print(show_mesg_data('memberdatabase'))
 
 # 資料寫進資料庫
 def insert_info(table_name, columns, values):
@@ -135,19 +152,21 @@ def login(request:Request, email = Form(...), password = Form(...)):
         if email == i[2] and password == i[3]:
             request.session['user'] = email
             request.session['username'] = i[1]
+            request.session['user_id'] = i[0]
             stat_var = True
             break
     if stat_var:
+        print(request.session)
         return RedirectResponse(url='/member', status_code=303)
     else:
         return RedirectResponse(url='/ohoh?msg=電子郵件或密碼錯誤', status_code=303)
     
 @app.get('/member')
 def member(request:Request):
-    # check_data = show_table_data('memberdatabase', 'memberinfo')
-    # check_name = [x[1] for x in check_data]
     user_state = request.session.get('user')
     user_name = request.session.get('username')
+    user_id = request.session.get('user_id')
+    show_message = show_mesg_data('memberdatabase')
     if not user_state:
         return RedirectResponse(url='/')
     return template.TemplateResponse('memberpageindex.html', {
@@ -156,7 +175,17 @@ def member(request:Request):
         'member_h1' : '歡迎光臨，這是會員頁',
         'successful_message' : f'{user_name}，歡迎登入系統',
         'logout_a' : '登出系統',
+        'messageboard' : '快來留言吧',
+        'massageinput' : '內容',
+        'messagebtn' : '送出',
+        'show_message' : show_message
     })
+@app.post('/createMessage')
+def createMessage(request:Request, message = Form(...)):
+    user_id = request.session.get('user_id')
+    user_name = request.session.get('username')
+    insert_info('message', ['content', 'member_id', 'user_name'], [message, user_id, user_name])
+    return RedirectResponse(url='/member', status_code=303)
 @app.get('/logout')
 def logout (request:Request):
     request.session.clear()
