@@ -53,14 +53,18 @@ def show_table(data_base_name, table_name):
     print(f'table {table_name} created successfully')
 
 # 顯示table
-def show_table_data(database_name, table_name):
+def show_table_data(database_name, table_name, email):
     conn = get_db_connect()
     mycursor = conn.cursor()
-    mycursor.execute(f'use {database_name}')
-    mycursor.execute(f'select * from {table_name}')
+    database_sql = f'use {database_name}'
+    select_sql = f'select * from {table_name} where email = %s'
+    mycursor.execute(database_sql)
+    mycursor.execute(select_sql, (email,))
     result = [x for x in mycursor]
     conn.close()
     return result
+
+print(show_table_data('memberdatabase', 'memberinfo', 'aaa'))
 
 # 顯示特定資料
 def show_mesg_data(database_name):
@@ -135,16 +139,11 @@ def root(request:Request):
     })
 
 @app.post('/signup')
-def regist_system(request:Request, regist_user_name = Form(...), regist_email = Form(...), regist_password = Form(...)):
-    check = show_table_data('memberdatabase', 'memberinfo')
+def regist_system(regist_user_name = Form(...), regist_email = Form(...), regist_password = Form(...)):
+    check_email = show_table_data('memberdatabase', 'memberinfo', regist_email)
     stat_var = True
-    # if regist_user_name == '' or regist_email == '' or regist_password == '':
-    #     stat_var = False
-    #     return RedirectResponse(url='/ohoh?msg=請輸入姓名、電子郵件和密碼', status_code=303)
-    for i in check:
-        if regist_email == i[2]:
-            stat_var = False
-            break
+    if check_email:
+        stat_var = False
     if stat_var:
         insert_info('memberinfo', ['name', 'email', 'password'], [regist_user_name, regist_email, regist_password])
         print('sign successfully')
@@ -152,14 +151,10 @@ def regist_system(request:Request, regist_user_name = Form(...), regist_email = 
     else:
         return RedirectResponse(url='/ohoh?msg=重複的電子郵件', status_code=303)
         
-
-
 @app.post('/login')
 def login(request:Request, email = Form(...), password = Form(...)):
-    check_data = show_table_data('memberdatabase', 'memberinfo')
+    check_data = show_table_data('memberdatabase', 'memberinfo', email)
     stat_var = False
-    # if  email.strip() == '' or password.strip() == '':
-    #     return RedirectResponse(url='/ohoh?msg=請輸入電子郵件和密碼', status_code=303)
     for i in check_data:
         if email == i[2] and password == i[3]:
             request.session['user'] = email
