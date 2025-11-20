@@ -21,4 +21,10 @@
 .content p {
   padding-top: 20px;
   font-size: 30px;
+}
+
+.link {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
 }/*# sourceMappingURL=failpagestyle.css.map */

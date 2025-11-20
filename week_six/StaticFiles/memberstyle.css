@@ -59,15 +59,29 @@
 }
 
 .board {
-  width: 100%;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boardp {
+  padding: 10px 10px 10px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.board p {
+.btn {
+  padding: 10px 30px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boardp p {
   font-size: 20px;
-  margin-bottom: 8px;
+}
+
+.end {
+  height: 10px;
 }/*# sourceMappingURL=memberstyle.css.map */
