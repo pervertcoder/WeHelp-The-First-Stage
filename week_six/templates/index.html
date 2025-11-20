@@ -16,13 +16,21 @@
     </div>
     <form action="/signup" method="post" id="regist_form" class="form">
       <div class="user_name">
-        {{user_name}}<input type="text" name="regist_user_name" />
+        {{user_name}}<input
+          type="text"
+          name="regist_user_name"
+          id="signUpName"
+        />
       </div>
       <div class="account">
-        {{mail_html}}<input type="text" name="regist_email" />
+        {{mail_html}}<input type="text" name="regist_email" id="signEmail" />
       </div>
       <div class="passwort">
-        {{password_html}}<input type="password" name="regist_password" />
+        {{password_html}}<input
+          type="password"
+          name="regist_password"
+          id="signPassword"
+        />
       </div>
       <div class="button"><button id="butt">{{regist_btn}}</button></div>
     </form>
@@ -31,12 +39,14 @@
       <p class="title1">{{login_system}}</p>
     </div>
     <form action="/login" method="post" id="form" class="form">
-      <div class="account">{{mail_html}}<input type="text" name="email" /></div>
+      <div class="account">
+        {{mail_html}}<input type="text" name="email" id="email" />
+      </div>
       <div class="passwort">
-        {{password_html}}<input type="password" name="password" />
+        {{password_html}}<input type="password" name="password" id="password" />
       </div>
       <div class="button"><button id="buttt">{{login_btn}}</button></div>
     </form>
-    <script src="StaticFiles/script.js"></script>
+    <script src="/StaticFiles/script.js"></script>
   </body>
 </html>

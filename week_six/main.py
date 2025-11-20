@@ -80,7 +80,7 @@ def show_mesg_data(database_name):
     result1 = [[x[0], x[1], x[2], x[3]] for x in mycursor]
     conn.close()
     return result1
-print(show_mesg_data('memberdatabase'))
+# print(show_mesg_data('memberdatabase'))
 
 # 資料寫進資料庫
 def insert_info(table_name, columns, values):
@@ -138,9 +138,9 @@ def root(request:Request):
 def regist_system(request:Request, regist_user_name = Form(...), regist_email = Form(...), regist_password = Form(...)):
     check = show_table_data('memberdatabase', 'memberinfo')
     stat_var = True
-    if regist_user_name == '' or regist_email == '' or regist_password == '':
-        stat_var = False
-        return RedirectResponse(url='/ohoh?msg=請輸入姓名、電子郵件和密碼', status_code=303)
+    # if regist_user_name == '' or regist_email == '' or regist_password == '':
+    #     stat_var = False
+    #     return RedirectResponse(url='/ohoh?msg=請輸入姓名、電子郵件和密碼', status_code=303)
     for i in check:
         if regist_email == i[2]:
             stat_var = False
@@ -158,8 +158,8 @@ def regist_system(request:Request, regist_user_name = Form(...), regist_email = 
 def login(request:Request, email = Form(...), password = Form(...)):
     check_data = show_table_data('memberdatabase', 'memberinfo')
     stat_var = False
-    if  email.strip() == '' or password.strip() == '':
-        return RedirectResponse(url='/ohoh?msg=請輸入電子郵件和密碼', status_code=303)
+    # if  email.strip() == '' or password.strip() == '':
+    #     return RedirectResponse(url='/ohoh?msg=請輸入電子郵件和密碼', status_code=303)
     for i in check_data:
         if email == i[2] and password == i[3]:
             request.session['user'] = email
