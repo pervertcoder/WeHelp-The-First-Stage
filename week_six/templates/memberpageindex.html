@@ -18,22 +18,27 @@
       <a href="/logout">{{logout_a}}</a>
     </div>
     <div class="line"></div>
-    <form class="message" action="/createMessage" method="post">
+    <form class="message" action="/createMessage" method="post" id="message">
       <div class="messageboard">
         <p>{{messageboard}}</p>
       </div>
       <div class="messageinput">
-        {{massageinput}} <input type="text" name="message" />
+        {{massageinput}} <input type="text" name="message" id="messageinput" />
       </div>
       <div class="messagebutton">
-        <button id="buttonmessage">{{messagebtn}}</button>
+        <button id="buttonmessage" type="submit">{{messagebtn}}</button>
       </div>
     </form>
     <div class="line"></div>
     <div class="board">
       {% for i in show_message %}
-      <p>{{i[0]}} ： {{i[1]}}</p>
-      {% endfor %}
+      <p>{{i[2]}} ： {{i[3]}}</p>
+      {% if i[1] == user_id %}
+      <button class="buttondelete" data-id="{{i[0]}}" type="button">
+        {{buttondelete}}
+      </button>
+      {% endif %} {% endfor %}
     </div>
+    <script src="/StaticFiles/memberscript.js"></script>
   </body>
 </html>

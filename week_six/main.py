@@ -77,7 +77,7 @@ def show_mesg_data(database_name):
         join memberinfo on message.member_id = memberinfo.id
         order by time asc
     ''')
-    result1 = [[x[2], x[3]] for x in mycursor]
+    result1 = [[x[0], x[1], x[2], x[3]] for x in mycursor]
     conn.close()
     return result1
 print(show_mesg_data('memberdatabase'))
@@ -97,7 +97,19 @@ def insert_info(table_name, columns, values):
     conn.close()
     print('data inserted successfully')
 
+# 從資料庫刪除留言
+def delete_data(database_name, comment_id):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
 
+    select_database = f'use {database_name}'
+    delete_sql = 'delete from message where id = %s'
+    mycursor.execute(select_database)
+    mycursor.execute(delete_sql, (comment_id,))
+    
+    conn.commit()
+    conn.close()
+    print('message deleted successfully')
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key = 'mysecretkey123')
@@ -178,7 +190,9 @@ def member(request:Request):
         'messageboard' : '快來留言吧',
         'massageinput' : '內容',
         'messagebtn' : '送出',
-        'show_message' : show_message
+        'show_message' : show_message,
+        'buttondelete' : 'X',
+        'user_id' : user_id,
     })
 @app.post('/createMessage')
 def createMessage(request:Request, message = Form(...)):
@@ -186,6 +200,14 @@ def createMessage(request:Request, message = Form(...)):
     user_name = request.session.get('username')
     insert_info('message', ['content', 'member_id', 'user_name'], [message, user_id, user_name])
     return RedirectResponse(url='/member', status_code=303)
+
+@app.post('/deleteMessage')
+async def delete_message(request:Request):
+    data = await request.json()
+    comment_id = int(data.get('id'))
+    delete_data('memberdatabase', comment_id)
+    return {'status' : 'OK'}
+
 @app.get('/logout')
 def logout (request:Request):
     request.session.clear()
