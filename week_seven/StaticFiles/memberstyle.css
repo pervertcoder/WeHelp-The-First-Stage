@@ -70,6 +70,31 @@
   font-size: 15px;
 }
 
+.childClass {
+  margin-top: 10px;
+}
+
+.nameUpdate {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.nameUpdate p {
+  font-size: 30px;
+}
+
+.inputnewName {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.inputnewName input {
+  margin-right: 10px;
+}
+
 .end {
   height: 10px;
 }/*# sourceMappingURL=memberstyle.css.map */

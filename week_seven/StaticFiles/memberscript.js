@@ -10,6 +10,11 @@ nameSearch.addEventListener("click", async function () {
     memberName.textContent = "找不到會員";
   }
   if (memberData.id) {
+    // const childBlock = document.createElement("p");
+    // childBlock.setAttribute("class", "childClass");
+    // childBlock.textContent =
+    //   memberData.name + " " + "(" + memberData.email + ")";
+    // memberName.appendChild(childBlock);
     memberName.textContent =
       memberData.name + " " + "(" + memberData.email + ")";
   }

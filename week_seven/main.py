@@ -196,7 +196,9 @@ def member(request:Request):
         'successful_message' : f'{user_name}，歡迎登入系統',
         'logout_a' : '登出系統',
         'nameContent' : '查詢會員姓名',
-        'search' : '查詢'
+        'search' : '查詢',
+        'new_name' : '更新我的名字',
+        'update' : '更新'
     })
 
 @app.get('/api/member/{member_id}')
@@ -205,16 +207,14 @@ def search_member (member_id:int):
     data_lis = [i for i in member_data]
     data_id = [i[0] for i in data_lis]
     length = len(data_id)
-    index = 0
-    for i in data_id:
-        if member_id == i:
-            index = data_id.index(i)
-            break
-        else:
-            index = length
-    if index >= 0 and index < length:
+    find_index = True
+    if member_id in data_id:
+        index = data_id.index(member_id)
+    else:
+        find_index = False
+    if find_index:
         return {'id' : data_lis[index][0], 'name' : data_lis[index][1], 'email' : data_lis[index][2]}
-    if index == length:
+    else:
         return {'id' : None}
 @app.get('/logout')
 def logout (request:Request):
