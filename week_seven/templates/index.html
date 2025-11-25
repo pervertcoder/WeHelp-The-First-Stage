@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="StaticFiles/reset.css" />
+    <link rel="stylesheet" href="StaticFiles/style.css" />
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <div class="homepage" id="homepage">
+      <div class="topbar">
+        <p>{{welcome}}</p>
+      </div>
+      <div class="content">
+        <p class="title1">{{regist_system}}</p>
+      </div>
+      <form action="/signup" method="post" id="regist_form" class="form">
+        <div class="user_name">
+          {{user_name}}<input
+            type="text"
+            name="regist_user_name"
+            id="signUpName"
+          />
+        </div>
+        <div class="account">
+          {{mail_html}}<input type="text" name="regist_email" id="signEmail" />
+        </div>
+        <div class="passwort">
+          {{password_html}}<input
+            type="password"
+            name="regist_password"
+            id="signPassword"
+          />
+        </div>
+        <div class="button"><button id="butt">{{regist_btn}}</button></div>
+      </form>
+      <div class="line"></div>
+      <div class="content">
+        <p class="title1">{{login_system}}</p>
+      </div>
+      <form action="/login" method="post" id="form" class="form">
+        <div class="account">
+          {{mail_html}}<input type="text" name="email" id="email" />
+        </div>
+        <div class="passwort">
+          {{password_html}}<input
+            type="password"
+            name="password"
+            id="password"
+          />
+        </div>
+        <div class="button"><button id="buttt">{{login_btn}}</button></div>
+      </form>
+    </div>
+    <div class="memberpage" id="memberpage">
+      <div class="line"></div>
+      <div class="membertitle">
+        <p>歡迎登入系統</p>
+      </div>
+      <a href="/">登出系統</a>
+      <div class="membercontent">
+        <p>查詢會員姓名</p>
+      </div>
+    </div>
+    <div class="line"></div>
+    <script src="/StaticFiles/script.js"></script>
+  </body>
+</html>
