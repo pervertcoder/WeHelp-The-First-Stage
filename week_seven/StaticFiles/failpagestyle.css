@@ -1,0 +1,30 @@
+.topbar {
+  width: 100%;
+  height: 180px;
+  background-color: #272727;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topbar p {
+  color: white;
+  font-size: 40px;
+}
+
+.content {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.content p {
+  padding-top: 20px;
+  font-size: 30px;
+}
+
+.link {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}/*# sourceMappingURL=failpagestyle.css.map */

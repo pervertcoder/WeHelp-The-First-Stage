@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="StaticFiles/memberstylereset.css" />
+    <link rel="stylesheet" href="StaticFiles/memberstyle.css" />
+    <title>{{member_title}}</title>
+  </head>
+  <body>
+    <div class="topbar">
+      <p>{{member_h1}}</p>
+    </div>
+    <div class="content">
+      <p>{{successful_message}}</p>
+    </div>
+    <div class="logout">
+      <a href="/logout">{{logout_a}}</a>
+    </div>
+    <div class="line"></div>
+    <div class="membername">
+      <p>{{nameContent}}</p>
+    </div>
+    <div class="searchName"></div>
+    <div class="inputName">
+      <input type="text" id="nameID" /><button type="button" id="searchBTN">
+        {{search}}
+      </button>
+    </div>
+    <div class="nameresult">
+      <p class="name" id="name"></p>
+    </div>
+    <footer class="end"></footer>
+    <script src="/StaticFiles/memberscript.js"></script>
+  </body>
+</html>
