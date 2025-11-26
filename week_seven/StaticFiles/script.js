@@ -1,7 +1,7 @@
 "use strict";
-const signUpName = document.getElementById("signUpName");
-const signEmail = document.getElementById("signEmail");
-const signPassword = document.getElementById("signPassword");
+const signUpName = document.getElementById("regist_user_name");
+const signEmail = document.getElementById("regist_email");
+const signPassword = document.getElementById("regist_password");
 const butt = document.getElementById("butt");
 const formSign = document.getElementById("regist_form");
 

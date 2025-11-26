@@ -45,15 +45,15 @@ form {
   margin-top: 0px;
 }
 
-.user_name input {
+#regist_user_name {
   margin-left: 5px;
 }
 
-.account input {
+#regist_email {
   margin-left: 5px;
 }
 
-.passwort input {
+#regist_password {
   margin-left: 5px;
 }
 
