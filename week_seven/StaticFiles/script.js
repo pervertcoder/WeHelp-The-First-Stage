@@ -8,9 +8,9 @@ const formSign = document.getElementById("regist_form");
 const button_send = function (event) {
   event.preventDefault();
   if (
-    signUpName.value === "" ||
-    signEmail.value === "" ||
-    signPassword.value === ""
+    signUpName.value.trim() === "" ||
+    signEmail.value.trim() === "" ||
+    signPassword.value.trim() === ""
   ) {
     alert("請填入姓名、電子郵件和密碼");
   } else {
