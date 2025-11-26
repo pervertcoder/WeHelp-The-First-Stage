@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Path, Query, Form, Request
+from fastapi import FastAPI, Path, Query, Form, Request, Body
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
-import requests
+import json
+from pydantic import BaseModel
 
 from dotenv import load_dotenv
 import os
@@ -19,71 +20,19 @@ def get_db_connect():
     )
     return mydb
 
-# 創造database
-def create_database(database_name):
-    conn = get_db_connect()
-    mycursor = conn.cursor()
-    mycursor.execute(f'create database {database_name}')
-    conn.commit()
-    conn.close()
-    print(f'Database {database_name} created successfully')
-
-# 顯示databases
-def show_databases ():
-    conn = get_db_connect()
-    mycursor = conn.cursor()
-    mycursor.execute('show databases')
-    db_list = [x[0] for x in mycursor]
-    conn.close()
-    return db_list
-
-# 創造table
-def show_table(data_base_name, table_name):
-    conn = get_db_connect()
-    mycursor = conn.cursor()
-    mycursor.execute(f'use {data_base_name}')
-    mycursor.execute(f'''create table {table_name}(
-        id int auto_increment primary key,
-        name varchar(254) not null,
-        email varchar(254) not null,
-        password varchar(254) not null)'''
-    )
-    conn.commit()
-    conn.close()
-    print(f'table {table_name} created successfully')
-
-# 顯示table
-def show_table_data(database_name, table_name, email):
+# 顯示table特定資料
+def show_table_data(database_name, table_name, column, email):
     conn = get_db_connect()
     mycursor = conn.cursor()
     database_sql = f'use {database_name}'
-    select_sql = f'select * from {table_name} where email = %s'
+    select_sql = f'select * from {table_name} where {column} = %s'
     mycursor.execute(database_sql)
     mycursor.execute(select_sql, (email,))
     result = [x for x in mycursor]
     conn.close()
     return result
 
-# print(show_table_data('memberdatabase', 'memberinfo', 'aaa'))
-
-# 顯示留言資料
-def show_mesg_data(database_name):
-    conn = get_db_connect()
-    mycursor = conn.cursor()
-    mycursor.execute(f'use {database_name}')
-    mycursor.execute('''select
-        message.id,
-        member_id,
-        memberinfo.name as sender_name,
-        message.content,
-        message.time
-        from message
-        join memberinfo on message.member_id = memberinfo.id
-        order by time asc
-    ''')
-    result1 = [[x[0], x[1], x[2], x[3]] for x in mycursor]
-    conn.close()
-    return result1
+# print(show_table_data('memberdatabase', 'memberinfo', 'name', 'aa'))
 
 # 顯示會員資料
 def show_member_data(database_name):
@@ -98,7 +47,7 @@ def show_member_data(database_name):
     ''')
     result = [x for x in mycursor]
     return result
-# print(show_member_data('memberdatabase'))
+
 # 資料寫進資料庫
 def insert_info(table_name, columns, values):
     conn = get_db_connect()
@@ -114,19 +63,21 @@ def insert_info(table_name, columns, values):
     conn.close()
     print('data inserted successfully')
 
-# 從資料庫刪除留言
-def delete_data(database_name, comment_id):
+# 修改資料庫的資料
+def change_name(old_name, new_name):
     conn = get_db_connect()
     mycursor = conn.cursor()
+    mycursor.execute('use memberdatabase')
+    mysql_command = 'update memberinfo set name = %s where name = %s'
+    mycursor.execute(mysql_command, (new_name, old_name))
 
-    select_database = f'use {database_name}'
-    delete_sql = 'delete from message where id = %s'
-    mycursor.execute(select_database)
-    mycursor.execute(delete_sql, (comment_id,))
-    
     conn.commit()
+    print('修改成功')
+    result = show_table_data('memberdatabase', 'memberinfo', 'name', new_name)
     conn.close()
-    print('message deleted successfully')
+    return True
+
+# print(change_name('aaa', 'aa'))
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key = 'mysecretkey123')
@@ -153,7 +104,7 @@ def root(request:Request):
 
 @app.post('/signup')
 def regist_system(regist_user_name = Form(...), regist_email = Form(...), regist_password = Form(...)):
-    check_email = show_table_data('memberdatabase', 'memberinfo', regist_email)
+    check_email = show_table_data('memberdatabase', 'memberinfo', 'email', regist_email)
     stat_var = True
     if check_email:
         stat_var = False
@@ -166,7 +117,7 @@ def regist_system(regist_user_name = Form(...), regist_email = Form(...), regist
         
 @app.post('/login')
 def login(request:Request, email = Form(...), password = Form(...)):
-    check_data = show_table_data('memberdatabase', 'memberinfo', email)
+    check_data = show_table_data('memberdatabase', 'memberinfo', 'email', email)
     stat_var = False
     for i in check_data:
         if email == i[2] and password == i[3]:
@@ -185,8 +136,6 @@ def login(request:Request, email = Form(...), password = Form(...)):
 def member(request:Request):
     user_state = request.session.get('user')
     user_name = request.session.get('username')
-    user_id = request.session.get('user_id')
-    show_message = show_mesg_data('memberdatabase')
     if not user_state:
         return RedirectResponse(url='/')
     return template.TemplateResponse('memberpageindex.html', {
@@ -201,12 +150,23 @@ def member(request:Request):
         'update' : '更新'
     })
 
+@app.patch('/api/member')
+def update_name(request:Request, body:dict=Body(...)):
+    old_name = request.session.get('username')
+    if old_name:
+        new_name = body['name']
+        print(old_name, new_name)
+        answer = change_name(old_name, new_name)
+        request.session['username'] = new_name
+        return {'ok' : answer}
+    else:
+        return {'error':True}
+
 @app.get('/api/member/{member_id}')
 def search_member (member_id:int):
     member_data = show_member_data('memberdatabase')
     data_lis = [i for i in member_data]
     data_id = [i[0] for i in data_lis]
-    length = len(data_id)
     find_index = True
     if member_id in data_id:
         index = data_id.index(member_id)

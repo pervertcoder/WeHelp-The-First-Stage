@@ -19,3 +19,28 @@ nameSearch.addEventListener("click", async function () {
       memberData.name + " " + "(" + memberData.email + ")";
   }
 });
+
+const newName = document.getElementById("newNameID");
+const updatebtn = document.getElementById("updateBTN");
+const nameTitle = document.getElementById("newNameTitle");
+const state = document.getElementById("state");
+
+updatebtn.addEventListener("click", async function () {
+  let res = await fetch("/api/member", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: newName.value }),
+  });
+  let result = await res.json();
+  console.log(result);
+  if (result["ok"]) {
+    nameTitle.textContent = newName.value + "，歡迎登入系統";
+    newName.value = "";
+    state.textContent = "更新成功";
+  }
+  if (result["error"]) {
+    state.textContent = "更新失敗";
+  }
+});

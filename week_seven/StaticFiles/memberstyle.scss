@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
 }
-.content p {
+#newNameTitle {
   padding-top: 20px;
   font-size: 30px;
   //   font-weight: lighter;
@@ -77,6 +77,15 @@
 }
 .inputnewName input {
   margin-right: 10px;
+}
+.showState {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+#state {
+  font-size: 15px;
 }
 .end {
   height: 10px;
