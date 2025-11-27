@@ -48,6 +48,17 @@ def show_member_data(database_name):
     result = [x for x in mycursor]
     return result
 
+# 顯示搜尋資料
+def show_search_history(database_name):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
+    mycursor.execute(f'use {database_name}')
+    mycursor.execute('select * from search_history')
+    result = [x for x in mycursor]
+    return result
+
+# print(show_search_history('memberdatabase'))
+
 # 資料寫進資料庫
 def insert_info(table_name, columns, values):
     conn = get_db_connect()
@@ -147,7 +158,9 @@ def member(request:Request):
         'nameContent' : '查詢會員姓名',
         'search' : '查詢',
         'new_name' : '更新我的名字',
-        'update' : '更新'
+        'update' : '更新',
+        'who' : '誰查詢了我',
+        'refresh' : '更新'
     })
 
 @app.patch('/api/member')
@@ -163,7 +176,8 @@ def update_name(request:Request, body:dict=Body(...)):
         return {'error':True}
 
 @app.get('/api/member/{member_id}')
-def search_member (member_id:int):
+def search_member (request:Request, member_id:int):
+    login_user_id = request.session.get('username')
     member_data = show_member_data('memberdatabase')
     data_lis = [i for i in member_data]
     data_id = [i[0] for i in data_lis]
@@ -173,9 +187,27 @@ def search_member (member_id:int):
     else:
         find_index = False
     if find_index:
+        insert_info('search_history', ['search_person', 'target_user_id'], [login_user_id, data_lis[index][0]])
         return {'id' : data_lis[index][0], 'name' : data_lis[index][1], 'email' : data_lis[index][2]}
     else:
         return {'id' : None}
+
+@app.get('/search')
+def search_history(request:Request):
+    user_id = request.session.get('user_id')
+    search_data = show_search_history('memberdatabase')
+    history_data = [i for i in search_data]
+    result = []
+    result_time = []
+    
+    for i in history_data:
+        if user_id == i[2]:
+            result.append(i[1])
+            result_time.append(i[3])
+      
+    return {'name' : result, 'time' : result_time}
+    
+
 @app.get('/logout')
 def logout (request:Request):
     request.session.clear()

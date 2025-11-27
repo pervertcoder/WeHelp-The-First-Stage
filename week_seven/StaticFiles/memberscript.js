@@ -53,3 +53,40 @@ updatebtn.addEventListener("click", async function () {
     }
   }
 });
+
+const searchButton = document.querySelector(".searchButton");
+const searchResult = document.getElementById("searchResult");
+
+searchButton.addEventListener("click", async function () {
+  let response = await fetch("/search", {
+    method: "GET",
+  });
+  let result = await response.json();
+  // console.log(result);
+
+  let newTime = [];
+  let newAnswer;
+  for (const i of result["time"]) {
+    let t = i.slice(10, 11);
+    newAnswer = i.replace(t, " ");
+  }
+  for (let i = 0; i < result["time"].length; i++) {
+    newTime.push(newAnswer);
+  }
+  // console.log(newTime);
+  let finalResult = [];
+  for (let i = 0; i < result["name"].length; i++) {
+    finalResult.push(result["name"][i]);
+    finalResult.push(newTime[i]);
+  }
+  console.log(finalResult);
+  const paired = function (arr) {
+    let pairlis = [];
+    for (let i = 0; i < arr.length; i += 2) {
+      pairlis.push([arr[i], arr[i + 1]]);
+    }
+    return pairlis;
+  };
+  let newFinal = paired(finalResult);
+  console.log(newFinal);
+});
