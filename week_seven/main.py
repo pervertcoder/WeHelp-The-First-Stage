@@ -225,7 +225,6 @@ def search_history(request:Request):
         if user_id == i[2]:
             result.append(i[1])
             result_time.append(i[3])
-      
     return {'name' : result, 'time' : result_time}
     
 

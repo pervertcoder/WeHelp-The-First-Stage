@@ -64,15 +64,15 @@ searchButton.addEventListener("click", async function () {
   let result = await response.json();
   // console.log(result);
 
+  // childBlock.remove();
   let newTime = [];
   let newAnswer;
   for (const i of result["time"]) {
     let t = i.slice(10, 11);
     newAnswer = i.replace(t, " ");
-  }
-  for (let i = 0; i < result["time"].length; i++) {
     newTime.push(newAnswer);
   }
+
   // console.log(newTime);
   let finalResult = [];
   for (let i = 0; i < result["name"].length; i++) {
@@ -90,12 +90,25 @@ searchButton.addEventListener("click", async function () {
   let newFinal = paired(finalResult);
   console.log(newFinal);
 
+  const parentBlockOld = document.querySelector(".answer");
+  const parent = parentBlockOld.parentNode;
+  const next = parentBlockOld.nextSibling;
+  parentBlockOld.remove();
+  const parentBlock = document.createElement("div");
+  parentBlock.setAttribute("class", "answer");
+
+  if (next) {
+    parent.insertBefore(parentBlock, next);
+  } else {
+    parent.appendChild(parentBlock);
+  }
+
   for (const i of newFinal) {
     const childBlock = document.createElement("p");
     childBlock.setAttribute("class", "childClass");
-    childBlock.textContent = "test";
-    document.querySelector(".answer").appendChild(childBlock);
     childBlock.textContent = i[0] + " " + "(" + i[1] + ")";
-    document.querySelector(".answer").appendChild(childBlock);
+    parentBlock.appendChild(childBlock);
   }
 });
+
+// childBlock.textContent = i[0] + " " + "(" + i[1] + ")";

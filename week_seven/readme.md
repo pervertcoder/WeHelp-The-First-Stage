@@ -18,22 +18,6 @@ password varchar(254) not null
 
 );
 
-create table message(
-
-id int auto_increment primary key,
-
-member_id int not null,
-
-content text not null,
-
-time datetime not null default current_timestamp,
-
-user_name varchar(254) not null,
-
-foreign key (member_id) references memberinfo(id)
-
-);
-
 create table search_history(
 
 id int primary key auto_increment,
