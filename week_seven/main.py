@@ -61,7 +61,7 @@ def show_member_name(data_base_name):
 
 
 # 顯示搜尋資料
-def show_search_history(database_name):
+def show_search_history(database_name, target_user_id):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
@@ -74,11 +74,11 @@ def show_search_history(database_name):
         search_time
         from search_history
         join memberinfo on search_history.search_person_id = memberinfo.id
-        where search_history.target_user_id = 1
+        where search_history.target_user_id = %s
         order by search_time desc
         limit 10
         '''
-    )
+    , (target_user_id,))
     result = [x for x in mycursor]
     return result
 
@@ -213,7 +213,7 @@ def search_member (request:Request, member_id:int):
 @app.get('/search')
 def search_history(request:Request):
     user_id = request.session.get('user_id')
-    search_data = show_search_history('memberdatabase')
+    search_data = show_search_history('memberdatabase', user_id)
     history_data = [i for i in search_data]
     result = []
     result_time = []
