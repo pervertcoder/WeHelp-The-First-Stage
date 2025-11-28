@@ -79,7 +79,7 @@ searchButton.addEventListener("click", async function () {
     finalResult.push(result["name"][i]);
     finalResult.push(newTime[i]);
   }
-  console.log(finalResult);
+  // console.log(finalResult);
   const paired = function (arr) {
     let pairlis = [];
     for (let i = 0; i < arr.length; i += 2) {
@@ -89,4 +89,13 @@ searchButton.addEventListener("click", async function () {
   };
   let newFinal = paired(finalResult);
   console.log(newFinal);
+
+  for (const i of newFinal) {
+    const childBlock = document.createElement("p");
+    childBlock.setAttribute("class", "childClass");
+    childBlock.textContent = "test";
+    document.querySelector(".answer").appendChild(childBlock);
+    childBlock.textContent = i[0] + " " + "(" + i[1] + ")";
+    document.querySelector(".answer").appendChild(childBlock);
+  }
 });

@@ -36,14 +36,14 @@ foreign key (member_id) references memberinfo(id)
 
 create table search_history(
 
-id int primary key auto_increment
+id int primary key auto_increment,
 
-search_person varchar(254) not null
+search_person_id int not null,
 
-target_user_id int not null
+target_user_id int not null,
 
-search_time datetime not null default current_timestamp
+search_time datetime not null default current_timestamp,
 
-foreign key(target_user_id) references memberinfo(id)
+foreign key(search_person_id) references memberinfo(id)
 
 );

@@ -48,12 +48,32 @@ def show_member_data(database_name):
     result = [x for x in mycursor]
     return result
 
+# 顯示會員名字
+def show_member_name(data_base_name):
+    conn = get_db_connect()
+    mycursor = conn.cursor()
+    mycursor.execute(f'use {data_base_name}')
+    mycursor.execute('select name from memberinfo')
+    result = [x for x in mycursor]
+    return result
+
+
 # 顯示搜尋資料
 def show_search_history(database_name):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
-    mycursor.execute('select * from search_history')
+    mycursor.execute(
+        '''
+        select
+        search_history.id,
+        memberinfo.name as search_person_name,
+        target_user_id,
+        search_time
+        from search_history
+        join memberinfo on search_history.search_person_id = memberinfo.id
+        order by search_time desc'''
+    )
     result = [x for x in mycursor]
     return result
 
@@ -75,12 +95,12 @@ def insert_info(table_name, columns, values):
     print('data inserted successfully')
 
 # 修改資料庫的資料
-def change_name(old_name, new_name):
+def change_name(member_email, new_name):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute('use memberdatabase')
-    mysql_command = 'update memberinfo set name = %s where name = %s'
-    mycursor.execute(mysql_command, (new_name, old_name))
+    mysql_command = 'update memberinfo set name = %s where email = %s'
+    mycursor.execute(mysql_command, (new_name, member_email))
 
     conn.commit()
     print('修改成功')
@@ -165,11 +185,11 @@ def member(request:Request):
 
 @app.patch('/api/member')
 def update_name(request:Request, body:dict=Body(...)):
-    old_name = request.session.get('username')
-    if old_name:
+    member_email = request.session.get('user')
+    if member_email:
         new_name = body['name']
-        print(old_name, new_name)
-        answer = change_name(old_name, new_name)
+        print(member_email, new_name)
+        answer = change_name(member_email, new_name)
         request.session['username'] = new_name
         return {'ok' : answer}
     else:
@@ -177,7 +197,8 @@ def update_name(request:Request, body:dict=Body(...)):
 
 @app.get('/api/member/{member_id}')
 def search_member (request:Request, member_id:int):
-    login_user_id = request.session.get('username')
+    login_user_id = request.session.get('user_id')
+    print(login_user_id)
     member_data = show_member_data('memberdatabase')
     data_lis = [i for i in member_data]
     data_id = [i[0] for i in data_lis]
@@ -187,7 +208,7 @@ def search_member (request:Request, member_id:int):
     else:
         find_index = False
     if find_index:
-        insert_info('search_history', ['search_person', 'target_user_id'], [login_user_id, data_lis[index][0]])
+        insert_info('search_history', ['search_person_id', 'target_user_id'], [login_user_id, data_lis[index][0]])
         return {'id' : data_lis[index][0], 'name' : data_lis[index][1], 'email' : data_lis[index][2]}
     else:
         return {'id' : None}
