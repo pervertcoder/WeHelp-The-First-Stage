@@ -9,15 +9,11 @@ nameSearch.addEventListener("click", async function () {
   } else {
     const res = await fetch("/api/member/" + nameID.value.trim());
     const memberData = await res.json();
+    console.log(memberData);
     if (!memberData.id) {
       memberName.textContent = "找不到會員";
     }
     if (memberData.id) {
-      // const childBlock = document.createElement("p");
-      // childBlock.setAttribute("class", "childClass");
-      // childBlock.textContent =
-      //   memberData.name + " " + "(" + memberData.email + ")";
-      // memberName.appendChild(childBlock);
       memberName.textContent =
         memberData.name + " " + "(" + memberData.email + ")";
     }
@@ -62,9 +58,8 @@ searchButton.addEventListener("click", async function () {
     method: "GET",
   });
   let result = await response.json();
-  // console.log(result);
+  console.log(result);
 
-  // childBlock.remove();
   let newTime = [];
   let newAnswer;
   for (const i of result["time"]) {

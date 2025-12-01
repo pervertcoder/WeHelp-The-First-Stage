@@ -35,7 +35,7 @@ def show_table_data(database_name, table_name, column, email):
 # print(show_table_data('memberdatabase', 'memberinfo', 'name', 'aa'))
 
 # 顯示會員資料
-def show_member_data(database_name):
+def show_member_data(database_name, user_id):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
@@ -44,10 +44,12 @@ def show_member_data(database_name):
         name,
         email
         from memberinfo
-    ''')
+        where id = %s
+    ''', (user_id,))
     result = [x for x in mycursor]
     return result
-
+# print(show_member_data('memberdatabase', 1))
+# print(show_member_data('memberdatabase', 9))
 # 顯示會員名字
 def show_member_name(data_base_name):
     conn = get_db_connect()
@@ -59,7 +61,7 @@ def show_member_name(data_base_name):
 
 
 # 顯示搜尋資料
-def show_search_history(database_name):
+def show_search_history(database_name, target_user_id):
     conn = get_db_connect()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
@@ -72,8 +74,11 @@ def show_search_history(database_name):
         search_time
         from search_history
         join memberinfo on search_history.search_person_id = memberinfo.id
-        order by search_time desc'''
-    )
+        where search_history.target_user_id = %s
+        order by search_time desc
+        limit 10
+        '''
+    , (target_user_id,))
     result = [x for x in mycursor]
     return result
 
@@ -198,33 +203,24 @@ def update_name(request:Request, body:dict=Body(...)):
 @app.get('/api/member/{member_id}')
 def search_member (request:Request, member_id:int):
     login_user_id = request.session.get('user_id')
-    print(login_user_id)
-    member_data = show_member_data('memberdatabase')
-    data_lis = [i for i in member_data]
-    data_id = [i[0] for i in data_lis]
-    find_index = True
-    if member_id in data_id:
-        index = data_id.index(member_id)
-    else:
-        find_index = False
-    if find_index:
-        insert_info('search_history', ['search_person_id', 'target_user_id'], [login_user_id, data_lis[index][0]])
-        return {'id' : data_lis[index][0], 'name' : data_lis[index][1], 'email' : data_lis[index][2]}
+    member_data = show_member_data('memberdatabase', member_id)
+    if member_data:
+        insert_info('search_history', ['search_person_id', 'target_user_id'], [login_user_id, member_data[0][0]])
+        return {'id' : member_data[0][0], 'name' : member_data[0][1], 'email' : member_data[0][2]}
     else:
         return {'id' : None}
-
+        
 @app.get('/search')
 def search_history(request:Request):
     user_id = request.session.get('user_id')
-    search_data = show_search_history('memberdatabase')
+    search_data = show_search_history('memberdatabase', user_id)
     history_data = [i for i in search_data]
     result = []
     result_time = []
     
     for i in history_data:
-        if user_id == i[2]:
-            result.append(i[1])
-            result_time.append(i[3])
+        result.append(i[1])
+        result_time.append(i[3])
     return {'name' : result, 'time' : result_time}
     
 
