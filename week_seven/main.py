@@ -9,20 +9,31 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
 import mysql.connector
+from mysql.connector import pooling
 
 load_dotenv()
 # 連線MySQL
-def get_db_connect():
-    mydb = mysql.connector.connect(
-        host = os.getenv('DB_HOST'),
-        user = os.getenv('DB_USER'),
-        password = os.getenv('DB_PASSWORD')
-    )
-    return mydb
+# def get_db_connect():
+#     mydb = mysql.connector.connect(
+#         host = os.getenv('DB_HOST'),
+#         user = os.getenv('DB_USER'),
+#         password = os.getenv('DB_PASSWORD')
+#     )
+#     return mydb
 
+# connenction pool
+pool = pooling.MySQLConnectionPool(
+    pool_name='mypool',
+    pool_size=10,
+    pool_reset_session=True,
+    host=os.getenv('DB_HOST'),
+    user=os.getenv('DB_USER'),
+    password = os.getenv('DB_PASSWORD')
+)
 # 顯示table特定資料
 def show_table_data(database_name, table_name, column, email):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
     database_sql = f'use {database_name}'
     select_sql = f'select * from {table_name} where {column} = %s'
@@ -36,7 +47,8 @@ def show_table_data(database_name, table_name, column, email):
 
 # 顯示會員資料
 def show_member_data(database_name, user_id):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
     mycursor.execute('''select
@@ -52,7 +64,8 @@ def show_member_data(database_name, user_id):
 # print(show_member_data('memberdatabase', 9))
 # 顯示會員名字
 def show_member_name(data_base_name):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
     mycursor.execute(f'use {data_base_name}')
     mycursor.execute('select name from memberinfo')
@@ -62,7 +75,8 @@ def show_member_name(data_base_name):
 
 # 顯示搜尋資料
 def show_search_history(database_name, target_user_id):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
     mycursor.execute(f'use {database_name}')
     mycursor.execute(
@@ -86,7 +100,8 @@ def show_search_history(database_name, target_user_id):
 
 # 資料寫進資料庫
 def insert_info(table_name, columns, values):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
 
     col_str = ','.join(columns)
@@ -101,7 +116,8 @@ def insert_info(table_name, columns, values):
 
 # 修改資料庫的資料
 def change_name(member_email, new_name):
-    conn = get_db_connect()
+    # conn = get_db_connect()
+    conn = pool.get_connection()
     mycursor = conn.cursor()
     mycursor.execute('use memberdatabase')
     mysql_command = 'update memberinfo set name = %s where email = %s'

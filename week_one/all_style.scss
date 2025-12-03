@@ -1,6 +1,7 @@
-// OOCSS:
-// SMACSS
-// BEM
+// OOCSS:分離結構跟樣式
+// SMACSS:Base、Layout、Module、State、Theme
+// BEM:B=Block, E=Element, M=Modifier example=card__title--big
+// 我選擇BEM，因為直覺，簡單好理解
 
 $basefontsize: 20px;
 $backgroundcolor: #ecf5ff;
@@ -8,27 +9,28 @@ $opacity: 0.6;
 $opacity_bar: 0.7;
 $title_bar_color: #d3d3d3;
 
-.topbar {
+.topbar,
+.topbar__container--top {
   width: 100%;
-  // margin-top: 0.5%;
-  // margin-bottom: 0.1%;
   padding-top: 10px;
   padding-bottom: 10px;
   display: flex;
   flex-wrap: nowrap;
   align-content: center;
 }
-.topbar1 {
+.topbar1,
+.topbar__container--left {
   width: 70%;
   margin-left: 15px;
 }
-.topbar2 {
+.topbar2,
+.topbar__container--right {
   width: 30%;
   display: flex;
   justify-content: end;
   align-items: center;
 }
-.left {
+.left .topbar__p--left {
   width: 10%;
   text-align: center;
   margin: 0px;
@@ -37,13 +39,15 @@ $title_bar_color: #d3d3d3;
   white-space: nowrap;
 }
 .item {
-  font-size: $basefontsize;
   width: 20%;
   height: 20px;
   text-align: center;
   align-content: center;
   margin: 0px;
   white-space: nowrap;
+}
+.topbar__p--font {
+  font-size: $basefontsize;
 }
 .hamburger,
 .menu {

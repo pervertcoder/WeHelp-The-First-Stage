@@ -1,5 +1,6 @@
 @charset "UTF-8";
-.topbar {
+.topbar,
+.topbar__container--top {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -8,19 +9,21 @@
   align-content: center;
 }
 
-.topbar1 {
+.topbar1,
+.topbar__container--left {
   width: 70%;
   margin-left: 15px;
 }
 
-.topbar2 {
+.topbar2,
+.topbar__container--right {
   width: 30%;
   display: flex;
   justify-content: end;
   align-items: center;
 }
 
-.left {
+.left .topbar__p--left {
   width: 10%;
   text-align: center;
   margin: 0px;
@@ -30,13 +33,16 @@
 }
 
 .item {
-  font-size: 20px;
   width: 20%;
   height: 20px;
   text-align: center;
   align-content: center;
   margin: 0px;
   white-space: nowrap;
+}
+
+.topbar__p--font {
+  font-size: 20px;
 }
 
 .hamburger,
