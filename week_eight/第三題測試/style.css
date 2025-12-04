@@ -1,0 +1,13 @@
+.content__div--outside {
+  display: none;
+}
+
+.content__div--inside {
+  display: flex;
+}
+.content__p--inside {
+  width: 50%;
+  border: solid 1px black;
+  padding: 15px;
+  line-height: 35px;
+}
