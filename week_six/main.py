@@ -3,7 +3,6 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
-import requests
 
 from dotenv import load_dotenv
 import os
@@ -64,7 +63,7 @@ def show_table_data(database_name, table_name, email):
     conn.close()
     return result
 
-print(show_table_data('memberdatabase', 'memberinfo', 'aaa'))
+# print(show_table_data('memberdatabase', 'memberinfo', 'aaa'))
 
 # 顯示特定資料
 def show_mesg_data(database_name):
@@ -217,27 +216,32 @@ def failpage(request:Request, msg:str):
         'error_message' : '請輸入姓名、電子郵件和密碼',
         'fail_title' : 'failpage',
     })
-    if msg == '重複的電子郵件': # 註冊
+    elif msg == '重複的電子郵件': # 註冊
         return template.TemplateResponse('failpageindex.html', {
         'request' : request,
         'fail' : '失敗頁面',
         'error_message' : '重複的電子郵件',
         'fail_title' : 'failpage',
     })
-    if msg == '電子郵件或密碼錯誤':  # 登入
+    elif msg == '電子郵件或密碼錯誤':  # 登入
         return template.TemplateResponse('failpageindex.html', {
         'request' : request,
         'fail' : '失敗頁面',
         'error_message' : '電子郵件或密碼錯誤',
         'fail_title' : 'failpage',
     })
-    if msg == '請輸入電子郵件和密碼': # 登入
+    elif msg == '請輸入電子郵件和密碼': # 登入
         return template.TemplateResponse('failpageindex.html', {
         'request' : request,
         'fail' : '失敗頁面',
         'error_message' : '請輸入電子郵件和密碼',
         'fail_title' : 'failpage',
     })
+    else:
+        return template.TemplateResponse('failpageindex.html', {
+            'request' : request,
+            'testXSS': msg,
+        })
 
 
 # 統一處理靜態檔案
