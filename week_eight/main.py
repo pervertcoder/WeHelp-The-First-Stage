@@ -9,14 +9,39 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = ['*'], #'http://127.0.0.1:5000'
+    # allow_origins = ['http://127.0.0.1:5000'],
+    allow_origins = ['*'],
     allow_methods = ['*'],
     allow_headers = ['*'],
 )
+# 'http://127.0.0.1:5000'
+@app.get('/')
+def test_api():
+    return {'test' : 'ok'}
 
-# @app.get('/')
-# def test_api():
-#     return {'test' : 'ok'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 url = 'https://lver76.pixnet.net/blog/post/35422107'
 data = requests.get(url)
